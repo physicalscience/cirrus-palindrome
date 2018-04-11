@@ -15,6 +15,9 @@ public:
     explicit Palindrome(QWidget *parent = 0);
     ~Palindrome();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::Palindrome *ui;
 };
