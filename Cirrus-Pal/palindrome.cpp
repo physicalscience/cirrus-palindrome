@@ -129,7 +129,7 @@ void Palindrome::computeClicked() {
  * returns - returns the palindromic number as a std::string
  */
 std::string Palindrome::findPalindrome(const int current, const int limit) {
-    if (current == limit) return "nothing";
+    if (current < limit) return "nothing";
     else {
         const std::string c = std::to_string(current);
         if (isPal(c, 0, (int)c.size()/2)) return c;
