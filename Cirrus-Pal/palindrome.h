@@ -2,9 +2,8 @@
 #define PALINDROME_H
 
 #include <QMainWindow>
-#include <QLabel>
 #include <QLineEdit>
-
+#include <QPushButton>
 namespace Ui {
 class Palindrome;
 }
@@ -22,7 +21,7 @@ private slots:
 
 private:
     Ui::Palindrome *ui;
-    QLabel *palLabel;
+    QPushButton *palLabel;
     QLineEdit *bigNumber;
     QLineEdit *lowNumber;
 

@@ -6,29 +6,93 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
+#include <QMessageBox>
 
 Palindrome::Palindrome(QWidget *parent) :
     QMainWindow(parent)
 {
     //components of the dialog
     QWidget *mainWidget = new QWidget(this);
+
     QGridLayout *gLayout = new QGridLayout(this);
     QVBoxLayout *vLayout = new QVBoxLayout;
-    QFormLayout *fLayout = new QFormLayout;
+    QVBoxLayout *tLayout = new QVBoxLayout;
+    QVBoxLayout *fLayout = new QVBoxLayout;
+
+    QPushButton *bigLabel = new QPushButton("Big Number:", this);
+    QPushButton *smallLabel = new QPushButton("Small Number: ", this);
+    QPushButton *title = new QPushButton("Palindrome Finder", this);
+    QPushButton *computeButton = new QPushButton("Compute!",this);
+    QPushButton *PTitle = new QPushButton("Largest Palindromic Number:", this);
+    palLabel = new QPushButton("0", this);
+
     bigNumber = new QLineEdit();
     lowNumber = new QLineEdit();
-    palLabel = new QLabel("something", this);
-    QPushButton *computeButton = new QPushButton(this);
+    QFrame *tLine = new QFrame;
+
+    //Styling all the widgets
+    bigLabel->setStyleSheet("QPushButton { padding: 0 0 4 2px;"
+                                          "background: transparent;"
+                                          "border: none;"
+                                          "text-align: left;}");
+
+    smallLabel->setStyleSheet("QPushButton {background: transparent;"
+                                           "border: none;"
+                                           "text-align: left;"
+                                           "padding: 20 0 4 2px}");
+
+    PTitle->setStyleSheet("QPushButton {background: transparent;"
+                                       "border: none;"
+                                       "text-align:left;"
+                                       "padding: 0 0 0 0px;}");
+
+    palLabel->setStyleSheet("QPushButton {background: transparent;"
+                                         "border: none;"
+                                         "text-align: right;"
+                                         "margin: 0 10 0 0px;}");
+
+    title->setStyleSheet("QPushButton { padding: 0 0 4 2px;"
+                                       "background: transparent;"
+                                       "border: none;"
+                                       "text-align: left;}");
+
+    computeButton->setStyleSheet("QPushButton {margin: 15 0 0 0px;"
+                                              "border: none;"
+                                              "color: white;"
+                                              "text-align: center;"
+                                              "background-color: grey;"
+                                              "font-size: 13px;"
+                                              "padding: 10 24px;"
+                                              "border-radius: 8px;"
+                                              "width: 100px}");
+
+    tLine->setFrameShape(QFrame::HLine);
+    tLine->setFrameShadow(QFrame::Sunken);
 
     //set up layout for components
-    computeButton->setText("Compute!");
+    vLayout->addWidget(PTitle);
     vLayout->addWidget(palLabel);
-    vLayout->setMargin(40);
-    fLayout->addRow("Big Number: ", bigNumber);
-    fLayout->addRow("Low Number: ", lowNumber);
-    fLayout->addWidget(computeButton);
-    gLayout->addLayout(fLayout, 0, 0, 1, 3);
-    gLayout->addLayout(vLayout, 0,3,1,1);
+    vLayout->setSpacing(0);
+    vLayout->setContentsMargins(40,-1,-1,-1);
+
+    tLayout->addWidget(title);
+    tLayout->addWidget(tLine);
+    tLayout->setSpacing(0);
+    tLayout->setContentsMargins(-1,-1,-1,-1);
+
+    fLayout->addWidget(bigLabel);
+    fLayout->addWidget(bigNumber);
+    fLayout->addWidget(smallLabel);
+    fLayout->addWidget(lowNumber);
+    fLayout->addWidget(computeButton, 0, Qt::AlignCenter);
+    fLayout->setSpacing(0);
+    //fLayout->setContentsMargins(-1,-1,-1,-1);
+
+    gLayout->addLayout(tLayout, 0, 0, 1, 4);
+    gLayout->addLayout(fLayout, 1, 0, 1, 3);
+    gLayout->addLayout(vLayout, 1,3,1,1);
+    gLayout->setSpacing(0);
+    //gLayout->setContentsMargins(-1,-1,-1,-1);
 
     //connect button to slot
     QObject::connect(computeButton, SIGNAL(clicked()), this, SLOT(computeClicked()));
@@ -46,10 +110,16 @@ Palindrome::Palindrome(QWidget *parent) :
 
 //Sets the label in the window to the highest palindrome
 void Palindrome::computeClicked() {
-    QString big = bigNumber->text();
-    QString little = lowNumber->text();
-    std::string pal = findPalindrome(big.toInt(), little.toInt());
-    palLabel->setText(QString::fromStdString(pal));
+    const int bigInt = bigNumber->text().toInt();
+    const int littleInt = lowNumber->text().toInt();
+    if (bigInt < 0 || littleInt < 0) {
+        palLabel->setText("No negatives!");
+    } else if (bigInt < littleInt) {
+        palLabel->setText("big number too small!");
+    } else {
+        std::string pal = findPalindrome(bigInt, littleInt);
+        palLabel->setText(QString::fromStdString(pal));
+    }
 }
 
 /*
