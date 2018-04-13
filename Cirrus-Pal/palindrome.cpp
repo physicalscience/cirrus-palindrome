@@ -118,16 +118,17 @@ Palindrome::Palindrome(QWidget *parent) :
 
 //Sets the label in the window to the highest palindrome
 void Palindrome::computeClicked() {
-    bool isInt;
-    const int bigInt = bigNumber->text().toInt(&isInt, 10);
-    const int littleInt = lowNumber->text().toInt(&isInt, 10);
-    if (!isInt) {
-        palLabel->setText("Not a Base 10 Number!");
+    bool bIsInt;
+    bool sIsInt;
+    const int bigInt = bigNumber->text().toInt(&bIsInt, 10);
+    const int littleInt = lowNumber->text().toInt(&sIsInt, 10);
+    if (!bIsInt | !sIsInt) {
+        palLabel->setText("Not a base 10 Number!");
     }
     else if (bigInt < 0 || littleInt < 0) {
         palLabel->setText("No negatives!");
     } else if (bigInt < littleInt) {
-        palLabel->setText("big number too small!");
+        palLabel->setText("Big number too small!");
     } else {
         std::string pal = findPalindrome(bigInt, littleInt);
         palLabel->setText(QString::fromStdString(pal));
