@@ -15,7 +15,7 @@ Palindrome::Palindrome(QWidget *parent) :
     QWidget *mainWidget = new QWidget(this);
 
     QGridLayout *gLayout = new QGridLayout(this);
-    QVBoxLayout *vLayout = new QVBoxLayout;
+    QGridLayout *vLayout = new QGridLayout(this);
     QVBoxLayout *tLayout = new QVBoxLayout;
     QVBoxLayout *fLayout = new QVBoxLayout;
 
@@ -30,6 +30,16 @@ Palindrome::Palindrome(QWidget *parent) :
     lowNumber = new QLineEdit();
     QFrame *tLine = new QFrame;
 
+    /**
+     * NOTE
+     * I had to use buttons here instead of labels as there
+     * seems to be some sort of bug in the QT framework when
+     * it comes to adding styling to QLabels.
+     *
+     * Instead, I just added a little bit of css to the buttons
+     * to turn them into labels.
+     *
+     **/
     //Styling all the widgets
     bigLabel->setStyleSheet("QPushButton { padding: 0 0 4 2px;"
                                           "background: transparent;"
@@ -44,12 +54,12 @@ Palindrome::Palindrome(QWidget *parent) :
     PTitle->setStyleSheet("QPushButton {background: transparent;"
                                        "border: none;"
                                        "text-align:left;"
-                                       "padding: 0 0 0 0px;}");
+                                       "padding: 0 0 10 0px;}");
 
     palLabel->setStyleSheet("QPushButton {background: transparent;"
                                          "border: none;"
                                          "text-align: right;"
-                                         "margin: 0 10 0 0px;}");
+                                         "margin: 20 10 0 0px;}");
 
     title->setStyleSheet("QPushButton { padding: 0 0 4 2px;"
                                        "background: transparent;"
@@ -70,8 +80,8 @@ Palindrome::Palindrome(QWidget *parent) :
     tLine->setFrameShadow(QFrame::Sunken);
 
     //set up layout for components
-    vLayout->addWidget(PTitle);
-    vLayout->addWidget(palLabel);
+    vLayout->addWidget(PTitle, 0,0);
+    vLayout->addWidget(palLabel,0,0);
     vLayout->setSpacing(0);
     vLayout->setContentsMargins(40,-1,-1,-1);
 
@@ -86,13 +96,11 @@ Palindrome::Palindrome(QWidget *parent) :
     fLayout->addWidget(lowNumber);
     fLayout->addWidget(computeButton, 0, Qt::AlignCenter);
     fLayout->setSpacing(0);
-    //fLayout->setContentsMargins(-1,-1,-1,-1);
 
     gLayout->addLayout(tLayout, 0, 0, 1, 4);
     gLayout->addLayout(fLayout, 1, 0, 1, 3);
     gLayout->addLayout(vLayout, 1,3,1,1);
     gLayout->setSpacing(0);
-    //gLayout->setContentsMargins(-1,-1,-1,-1);
 
     //connect button to slot
     QObject::connect(computeButton, SIGNAL(clicked()), this, SLOT(computeClicked()));
@@ -101,7 +109,7 @@ Palindrome::Palindrome(QWidget *parent) :
     mainWidget->setLayout(gLayout);
 
     //set the default size of the window and set central widget
-    this->setGeometry(250,250,450,250);
+    this->setGeometry(250,250,350,150);
     this->setCentralWidget(mainWidget);
 
     //display the window
@@ -110,9 +118,13 @@ Palindrome::Palindrome(QWidget *parent) :
 
 //Sets the label in the window to the highest palindrome
 void Palindrome::computeClicked() {
-    const int bigInt = bigNumber->text().toInt();
-    const int littleInt = lowNumber->text().toInt();
-    if (bigInt < 0 || littleInt < 0) {
+    bool isInt;
+    const int bigInt = bigNumber->text().toInt(&isInt, 10);
+    const int littleInt = lowNumber->text().toInt(&isInt, 10);
+    if (!isInt) {
+        palLabel->setText("Not a Base 10 Number!");
+    }
+    else if (bigInt < 0 || littleInt < 0) {
         palLabel->setText("No negatives!");
     } else if (bigInt < littleInt) {
         palLabel->setText("big number too small!");

@@ -1,16 +1,14 @@
 # cirrus-palindrome
----
+
 ## Calculating the largets palindromic number between two integers
 
 The algorithm used in this program is purely **functional** and **referentially transparent**
 
 This means: 
-    1. No mutations
-    2. No side effects
-    4. No loops
-    3. The result of either function could be replaced with a hard coded replacement and the functionality of the program would not change
-
-***
+1. No mutations
+2. No side effects
+4. No loops
+3. The result of either function could be replaced with a hard coded value and the functionality of the program would not change
 
 ### First function
 
@@ -45,22 +43,23 @@ bool Palindrome::isPal(const std::string n, const int index, const int halfSize)
 }
 ```
 
-***
-
 ## Why do it this way?
 
 If there is no mutations or side effects to a function, it makes it incredibly easy to test, maintain, read, etc. 
 
----
+By looking at the Control flow graph for the function **isPal** we can see that only 3 unit tests would be needed for full path coverage (resulting in far greater fault detection than line coverage):
+![alt text](isPal.png "isPal CFG")
+
+Imagine multiple loops with mutable values! 
 
 ## Running this program 
 
-    **Note:** The QT framework must be installed to run this program
+**Note:** The QT framework must be installed to run this program
         It can be downloaded [here](https://www.qt.io/download?hsCtaTracking=e7149b67-6bc4-4d7a-92d8-2a6198e7c0ef%7Cd589f70e-c5bb-44bc-bded-5f11d520fa77)
 
-    1. Open the QT Creator APP
-    2. Select File -> Open
-    3. Navigate to the Cirrus-Pal.pro file
-    4. Double click the file
-    5. Select Build -> Run
+1. Open the QT Creator APP
+2. Select File -> Open
+3. Navigate to the Cirrus-Pal.pro file
+4. Double click the file
+5. Select Build -> Run
 
